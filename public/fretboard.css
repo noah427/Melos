@@ -1,0 +1,40 @@
+#fretboard {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  flex-wrap: wrap;
+  background-image: linear-gradient(to left, #3e9fa0 , #1e4989);
+}
+
+.fret {
+  width: 3.6vw;
+  height: 4vw;
+  margin-right: 0.2vw;
+  margin-left: 0.2vw;
+  margin-top: 0.5vw;
+  background-color: rgba(170, 43, 49, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 35%;
+}
+
+.fret > p {
+  font-size: 2vmax;
+  font-family: 'Negotiate Free', sans-serif;
+  color: white;
+  text-shadow: 0.2vw 0.2vh black;
+}
+
+.fret:hover {
+  box-shadow: 0.2vw 0.2vh black;
+}
+
+
+.fretMarking {
+  background-color: rgba(170, 43, 49, 0.5);
+}
+
+.fretActive {
+  background-color: rgba(170, 43, 49, 0.8);
+}

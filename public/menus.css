@@ -1,0 +1,19 @@
+#menus {
+  width: 100%;
+  height: 5vh;
+  background-color: gray;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.mitem {
+  width: 5vw;
+  height: 3vw;
+  background-color: black;
+  color: white;
+  font-size: 1vmax;
+  text-align: center;
+}
+
+

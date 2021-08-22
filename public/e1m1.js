@@ -1,6 +1,10 @@
+var Playing = false
+
 export default async function E1m1 (sleep, ActivateFret) {
+  if (Playing == true) return
+  Playing = true
   const speed = 125
-  const stdn = "12n"
+  const stdn = '12n'
   const DoubleE = async () => {
     await ActivateFret(5, 0, speed, '12n')
     await ActivateFret(5, 0, speed, '12n')
@@ -34,37 +38,36 @@ export default async function E1m1 (sleep, ActivateFret) {
   }
 
   const ThirdDescent = async () => {
-      const d44 = async () => {
-        await ActivateFret(4,4,speed,stdn)
-        await ActivateFret(4,4,speed,stdn)
-      }
+    const d44 = async () => {
+      await ActivateFret(4, 4, speed, stdn)
+      await ActivateFret(4, 4, speed, stdn)
+    }
 
-      const d22 = async () => {
-        await ActivateFret(4,2,speed,stdn)
-        await ActivateFret(4,2,speed,stdn)
-      }
+    const d22 = async () => {
+      await ActivateFret(4, 2, speed, stdn)
+      await ActivateFret(4, 2, speed, stdn)
+    }
 
-      await d44()
-      await ActivateFret(2,6,speed,stdn)
-      await d44()
-      await ActivateFret(2,4,speed,stdn)
-      await d44()
-      await ActivateFret(3,7,speed,stdn)
-      await d44()
-      await ActivateFret(3,5,speed,stdn)
-      await d44()
-      await ActivateFret(3,6,speed,stdn)
-      await ActivateFret(3,7,speed,stdn)
-      await d22()
-      await ActivateFret(2,4,speed,stdn)
-      await d22()
-      await ActivateFret(2,2,speed,stdn)
-      await d22()
-      await ActivateFret(3,5,speed,stdn)
-      await ActivateFret(4,0,speed,stdn)
-      await ActivateFret(4,0,speed,stdn)
-      await ActivateFret(3,3,speed*3,"8n")
-      
+    await d44()
+    await ActivateFret(2, 6, speed, stdn)
+    await d44()
+    await ActivateFret(2, 4, speed, stdn)
+    await d44()
+    await ActivateFret(3, 7, speed, stdn)
+    await d44()
+    await ActivateFret(3, 5, speed, stdn)
+    await d44()
+    await ActivateFret(3, 6, speed, stdn)
+    await ActivateFret(3, 7, speed, stdn)
+    await d22()
+    await ActivateFret(2, 4, speed, stdn)
+    await d22()
+    await ActivateFret(2, 2, speed, stdn)
+    await d22()
+    await ActivateFret(3, 5, speed, stdn)
+    await ActivateFret(4, 0, speed, stdn)
+    await ActivateFret(4, 0, speed, stdn)
+    await ActivateFret(3, 3, speed * 3, '8n')
   }
 
   //   const Solo = async () => {
@@ -118,6 +121,8 @@ export default async function E1m1 (sleep, ActivateFret) {
   await ActivateFret(4, 3, speed, '12n')
   await Descent(true)
   await sleep(speed * 2)
+
+  Playing = false
 
   //   await Solo()
 }

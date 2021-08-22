@@ -10,32 +10,3 @@ html {
   flex-direction: column;
   font-family: 'Negotiate Free', sans-serif;
 }
-
-#menus {
-  width: 100%;
-  height: 5vh;
-  background-color: red;
-}
-
-#fretboard {
-  width: 100vw;
-  height: 50vh;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: gray;
-}
-
-.fret {
-  width: 3.6vw;
-  height: 4vw;
-  margin-right: 0.2vw;
-  margin-left: 0.2vw;
-  margin-top: 0.5vw;
-  background-color: blue;
-  font-size: 2vmax;
-  font-family: 'Negotiate Free', sans-serif;
-}
-
-.fretActive {
-  background-color: purple;
-}
