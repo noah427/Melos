@@ -9,4 +9,5 @@ html {
   width: 100vw;
   flex-direction: column;
   font-family: 'Negotiate Free', sans-serif;
+  background-color: grey;
 }

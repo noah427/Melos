@@ -3,7 +3,7 @@ var Playing = false
 export default async function E1m1 (sleep, ActivateFret) {
   if (Playing == true) return
   Playing = true
-  const speed = 125
+  const speed = 125/1.5
   const stdn = '12n'
   const DoubleE = async () => {
     await ActivateFret(5, 0, speed, '12n')
