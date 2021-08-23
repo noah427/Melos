@@ -6,12 +6,14 @@ class Note {
 
   Text () {
     let e = document.createElement('p')
-    e.innerHTML = this.Value
+    e.classList.add('note-display')
+    e.innerText = this.Value
     return e
   }
 
-  Update () {
-    e.innerHTML = this.Value
+  Update (value) {
+    this.Value = value
+    this.Element.innerText = this.Value
   }
 
   Div () {
@@ -22,26 +24,88 @@ class Note {
   }
 }
 
+export class Replay {
+  constructor (ActivateFrets, Sleep) {
+    this.Tabs = []
+    this.Index = -1
+    this.Recording = false
+    this.Playing
+    this.ActivateFrets = ActivateFrets
+    this.Sleep = Sleep
+  }
+
+  fillNote (y, x) {
+    if (this.Index == -1) return
+    this.Tabs[this.Index].fillNote(y, x)
+  }
+
+  changeIndex (index) {
+    if (this.Index != -1) {
+      let prior = this.Tabs[this.Index]
+      prior.Recording = false
+      prior.Element.classList.remove('tab-capturing')
+    }
+    if (index == -1) {
+      this.Index = -1
+      return
+    }
+    let tab = this.Tabs[index]
+    if (tab == undefined) {
+      return
+    }
+    tab.Recording = true
+    tab.Element.classList.add('tab-capturing')
+    this.Index = index
+  }
+
+  Record (tab) {
+    if (tab.Recording) {
+      this.changeIndex(-1)
+    } else {
+      this.changeIndex(tab.Index)
+    }
+  }
+
+  async Play () {
+    if (this.Playing) return
+    this.Playing = true
+    if (this.Index == -1) this.changeIndex(0)
+    for (let i = this.Index; i < 16; i++) {
+      var array = []
+      for (const n in this.Tabs[i].Notes) {
+        array.push([this.Tabs[i].Notes[n].Value, n])
+      }
+      await this.ActivateFrets(array, 125)
+      this.changeIndex(this.Index + 1)
+    }
+    this.changeIndex(-1)
+    this.Playing = false
+  }
+
+  initiateTabs () {
+    for (let i = 0; i < 16; i++) {
+      let tab = new Tab(i)
+      tab.Element.onclick = this.Record.bind(this, tab)
+      this.Tabs.push(tab)
+      document.getElementById('tabbar').append(tab.Element)
+    }
+  }
+}
+
 export class Tab {
-  constructor (selector) {
+  constructor (index) {
     this.Notes = []
-    this.Selector = selector
-    this.Capturing = false
+    this.Recording = false
+    this.Index = index
     this.Element = this.Div()
   }
 
-  Capture () {
-    if(this.Capturing){
-      this.Store()
-      return
+  fillNote (y, x) {
+    if (this.Notes[y].Value == x) {
+      this.Notes[y].Update('-')
+    } else {
+      this.Notes[y].Update(x)
     }
-    this.Capturing = true
-    this.Element.classList.add("tab-capturing")
-  }
-
-  Store(){
-    this.Capturing = false
-    this.Element.classList.remove("tab-capturing")
   }
 
   Div () {
@@ -53,11 +117,7 @@ export class Tab {
       e.appendChild(note.Element)
     }
 
-    e.onclick = this.Capture.bind(this)
+    // e.onclick = this.Capture.bind(this)
     return e
   }
-}
-
-export class Selection {
-  
 }

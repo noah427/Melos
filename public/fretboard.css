@@ -24,6 +24,7 @@
   font-family: 'Negotiate Free', sans-serif;
   color: white;
   text-shadow: 0.2vw 0.2vh black;
+  user-select: none;
 }
 
 .fret:hover {

@@ -37,9 +37,10 @@
   justify-content: center;
 }
 
-
-.tab-note > p{
+.note-display {
   font-size: 1.5vh;
+  user-select: none;
+  color: white;
 }
 
 #tabbar::-webkit-scrollbar {

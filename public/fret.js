@@ -27,14 +27,15 @@ class Timer {
 }
 
 export class Fret {
-  constructor (y, x, synth) {
+  constructor (y, x, synth, replay) {
     this.synth = synth
+    this.replay = replay
     this.x = x
     this.y = y
     this.Note = this.calculateNote(y, x)
     this.Octave = this.calculateOctave(y, x)
     this.Element = this.Div(y, x)
-    this.Timer
+    this.Timer = null
     this.HeldTime = 0
   }
 
@@ -51,12 +52,17 @@ export class Fret {
   StartNote () {
     const now = Tone.now()
     this.Timer = new Timer()
+    if (this.replay != undefined && this.replay.Playing != true) {
+      this.replay.fillNote(this.y, this.x)
+    }
     this.synth.triggerAttack(`${this.Note}${this.Octave}`, now)
   }
 
   EndNote () {
     const now = Tone.now()
-    this.HeldTime = this.Timer.Stop()
+    if (this.Timer != null) {
+      this.HeldTime = this.Timer.Stop()
+    }
     this.synth.triggerRelease([`${this.Note}${this.Octave}`], now + 0.1)
   }
 
