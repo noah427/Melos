@@ -44,12 +44,10 @@ async function ActivateFrets (notes, time) {
   var Notes = []
   for (const n of notes) {
     let note = await noteMapping.get(`${n[0]}:${n[1]}`)
-    console.log(note)
-    if (note == undefined){
+    if (note == undefined) {
       continue
     }
     Notes.push(note)
-
     note.StartNote()
   }
 
@@ -58,6 +56,7 @@ async function ActivateFrets (notes, time) {
   for (const n of Notes) {
     n.EndNote()
   }
+  await sleep(time)
 }
 
 function sleep (ms) {

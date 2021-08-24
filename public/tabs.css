@@ -2,7 +2,7 @@
   height: 20vw;
   width: 100vw;
   border-top: 1vh solid slateblue;
-  background-color: royalblue;
+  background-image: linear-gradient(to right, #3e9fa0, #1e4989);
   display: flex;
   align-items: center;
   overflow-x: scroll;
@@ -14,7 +14,7 @@
   height: 85%;
   margin-left: 0.5%;
   margin-right: 0.5%;
-  background-color: aqua;
+  background-color: rgba(170, 43, 49, 0.3);
   border-radius: 33%;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
 }
 
 .tab-capturing {
-  background-color: teal;
+  background-color: rgba(170, 43, 49, 0.5);
 }
 
 .tab-note {
@@ -31,16 +31,20 @@
   height: 13%;
   margin-top: 1.5%;
   margin-bottom: 1.5%;
-  background-color: red;
+  background-color: rgba(170, 43, 49, 0.8);
   border-radius: 2vw;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .note-display {
-  font-size: 1.5vh;
+  text-align: center;
+  font-size: 3vh;
   user-select: none;
+  font-family: 'Negotiate Free', sans-serif;
   color: white;
+  text-shadow: 0.2vw 0.2vh black;
 }
 
 #tabbar::-webkit-scrollbar {
@@ -52,6 +56,6 @@
 
 #tabbar::-webkit-scrollbar-thumb {
   display: contents;
-  background: blue;
+  background: rgba(170, 43, 49, 0.3);
   border-radius: 2.5vh;
 }

@@ -1,6 +1,7 @@
 class Note {
   constructor () {
     this.Value = '-'
+    this.TextDisplay
     this.Element = this.Div()
   }
 
@@ -8,12 +9,13 @@ class Note {
     let e = document.createElement('p')
     e.classList.add('note-display')
     e.innerText = this.Value
+    this.TextDisplay = e
     return e
   }
 
   Update (value) {
     this.Value = value
-    this.Element.innerText = this.Value
+    this.TextDisplay.innerText = this.Value
   }
 
   Div () {
@@ -59,6 +61,7 @@ export class Replay {
   }
 
   Record (tab) {
+    if (this.Playing) return
     if (tab.Recording) {
       this.changeIndex(-1)
     } else {
