@@ -177,13 +177,13 @@ export class TimingSelector {
   NextNote () {
     this.NoteType = (this.NoteType + 1) % SvgOrder.length
     this.Division = this.NoteType == 0 ? 1 : this.Division * 2
-    this.Element.src = `/svg/${SvgOrder[this.NoteType]}`
+    this.Element.src = `${SvgOrder[this.NoteType]}`
   }
 
   Img () {
     let e = document.createElement('img')
     e.classList.add('timing-selector')
-    e.src = `/svg/${SvgOrder[this.NoteType]}`
+    e.src = `${SvgOrder[this.NoteType]}`
     e.onclick = this.NextNote.bind(this)
     return e
   }
