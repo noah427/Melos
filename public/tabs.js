@@ -1,3 +1,10 @@
+const SvgOrder = [
+  'whole-note.svg',
+  'quarter-note.svg',
+  'half-note.svg',
+  'eigth-note.svg'
+]
+
 class Note {
   constructor () {
     this.Value = '-'
@@ -31,21 +38,25 @@ export class Replay {
     this.Tabs = []
     this.Index = -1
     this.Recording = false
-    this.Playing
+    this.Playing = false
     this.ActivateFrets = ActivateFrets
     this.Sleep = Sleep
+    this.Last = 0
+    this.Speed = 1000
   }
 
   fillNote (y, x) {
     if (this.Index == -1) return
-    this.Tabs[this.Index].fillNote(y, x)
+    this.Tabs[this.Index].Tab.fillNote(y, x)
+    if (this.Last < this.Index) {
+      this.Last = this.Index
+    }
   }
 
   changeIndex (index) {
     if (this.Index != -1) {
       let prior = this.Tabs[this.Index]
-      prior.Recording = false
-      prior.Element.classList.remove('tab-capturing')
+      prior.Deselect()
     }
     if (index == -1) {
       this.Index = -1
@@ -55,8 +66,7 @@ export class Replay {
     if (tab == undefined) {
       return
     }
-    tab.Recording = true
-    tab.Element.classList.add('tab-capturing')
+    tab.Select()
     this.Index = index
   }
 
@@ -73,12 +83,17 @@ export class Replay {
     if (this.Playing) return
     this.Playing = true
     if (this.Index == -1) this.changeIndex(0)
-    for (let i = this.Index; i < 16; i++) {
-      var array = []
-      for (const n in this.Tabs[i].Notes) {
-        array.push([this.Tabs[i].Notes[n].Value, n])
+    for (let i = this.Index; i < this.Tabs.length; i++) {
+      if (i > this.Last) {
+        this.changeIndex(-1)
+        this.Playing = false
+        return
       }
-      await this.ActivateFrets(array, 125)
+      var array = []
+      for (const n in this.Tabs[i].Tab.Notes) {
+        array.push([this.Tabs[i].Tab.Notes[n].Value, n])
+      }
+      await this.ActivateFrets(array, this.Speed / this.Tabs[i].TimingSelector.Division)
       this.changeIndex(this.Index + 1)
     }
     this.changeIndex(-1)
@@ -87,19 +102,95 @@ export class Replay {
 
   initiateTabs () {
     for (let i = 0; i < 16; i++) {
-      let tab = new Tab(i)
+      let tab = new Timing(i, this.addTab.bind(this), this.getLength.bind(this))
       tab.Element.onclick = this.Record.bind(this, tab)
       this.Tabs.push(tab)
       document.getElementById('tabbar').append(tab.Element)
     }
   }
+
+  addTab () {
+    let tab = new Timing(
+      this.Tabs.length,
+      this.addTab.bind(this),
+      this.getLength.bind(this)
+    )
+    tab.Element.onclick = this.Record.bind(this, tab)
+    this.Tabs.push(tab)
+    document.getElementById('tabbar').append(tab.Element)
+  }
+
+  getLength () {
+    return this.Tabs.length
+  }
+}
+
+export class Timing {
+  constructor (index, addTab, getLength) {
+    this.Index = index
+    this.AddTab = addTab
+    this.GetLength = getLength
+    this.Tab
+    this.TimingSelector
+    this.Element = this.Div()
+  }
+
+  Select () {
+    this.Tab.Recording = true
+    this.Tab.Element.classList.add('tab-capturing')
+  }
+
+  Deselect () {
+    this.Tab.Recording = false
+    this.Tab.Element.classList.remove('tab-capturing')
+  }
+
+  Div () {
+    let e = document.createElement('div')
+    e.classList.add('timing')
+    let tab = new Tab(this.Index, this.ExtendRow.bind(this))
+    this.Tab = tab
+    e.appendChild(tab.Element)
+    let timingSelector = new TimingSelector()
+    this.TimingSelector = timingSelector
+    e.appendChild(timingSelector.Element)
+    return e
+  }
+
+  ExtendRow () {
+    if (this.GetLength() - 1 == this.Index) {
+      this.AddTab()
+    }
+  }
+}
+
+export class TimingSelector {
+  constructor () {
+    this.NoteType = 0
+    this.Division = 1
+    this.Element = this.Img()
+  }
+  NextNote () {
+    this.NoteType = (this.NoteType + 1) % SvgOrder.length
+    this.Division = this.NoteType == 0 ? 1 : this.Division * 2
+    this.Element.src = `/public/svg/${SvgOrder[this.NoteType]}`
+  }
+
+  Img () {
+    let e = document.createElement('img')
+    e.classList.add('timing-selector')
+    e.src = `/public/svg/${SvgOrder[this.NoteType]}`
+    e.onclick = this.NextNote.bind(this)
+    return e
+  }
 }
 
 export class Tab {
-  constructor (index) {
+  constructor (index, extendRow) {
     this.Notes = []
     this.Recording = false
     this.Index = index
+    this.ExtendRow = extendRow
     this.Element = this.Div()
   }
 
@@ -109,6 +200,8 @@ export class Tab {
     } else {
       this.Notes[y].Update(x)
     }
+
+    this.ExtendRow()
   }
 
   Div () {
@@ -120,7 +213,6 @@ export class Tab {
       e.appendChild(note.Element)
     }
 
-    // e.onclick = this.Capture.bind(this)
     return e
   }
 }

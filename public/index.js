@@ -3,8 +3,6 @@ import { Replay } from './tabs.js'
 import { Fret } from './fret.js'
 
 const synth = new Tone.PolySynth(Tone.Synth).toDestination()
-// const distortion = new Tone.Distortion(1).toDestination();
-// synth.connect(distortion)
 
 var noteMapping = new Map()
 var replay = new Replay(ActivateFrets, sleep)
@@ -56,7 +54,7 @@ async function ActivateFrets (notes, time) {
   for (const n of Notes) {
     n.EndNote()
   }
-  await sleep(time)
+  await sleep(100)
 }
 
 function sleep (ms) {
