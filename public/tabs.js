@@ -1,8 +1,9 @@
 const SvgOrder = [
   'whole-note.svg',
-  'quarter-note.svg',
   'half-note.svg',
-  'eigth-note.svg'
+  'quarter-note.svg',
+  'eigth-note.svg',
+  'sixteenth-note.svg'
 ]
 
 class Note {
@@ -93,7 +94,10 @@ export class Replay {
       for (const n in this.Tabs[i].Tab.Notes) {
         array.push([this.Tabs[i].Tab.Notes[n].Value, n])
       }
-      await this.ActivateFrets(array, this.Speed / this.Tabs[i].TimingSelector.Division)
+      await this.ActivateFrets(
+        array,
+        this.Speed / this.Tabs[i].TimingSelector.Division
+      )
       this.changeIndex(this.Index + 1)
     }
     this.changeIndex(-1)
